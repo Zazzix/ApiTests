@@ -1,4 +1,4 @@
-//import { test } from '../helpers/fixtures/fixture';
+import { test } from '../helpers/fixtures/fixture';
 
 //const UrlApi = 'https://apichallenges.eviltester.com';
 

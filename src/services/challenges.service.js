@@ -1,3 +1,5 @@
+import { test } from '../helpers/fixtures/fixture';
+
 export class ChallengesService {
     constructor(request, token) {
         this.request = request;
@@ -12,7 +14,8 @@ export class ChallengesService {
                 }
             }
         );
-        const r = await response.json();
-        return r;
+        //const r = await response.json();
+        //console.log(r);
+        return response;
     }
 }
