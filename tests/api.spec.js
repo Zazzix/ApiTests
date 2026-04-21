@@ -1,8 +1,7 @@
 import { test } from '../src/helpers/fixtures/fixture';
 import { expect } from '@playwright/test';
 import { Api } from '../src/services/api.service';
-import { TodoBuilder } from '../src/helpers/builders';
-import { da } from '@faker-js/faker';
+import { TodoBuilder } from '../src/helpers/builders/index';
 
 
 test('Create a new challenger session @tag("post")', async ({ api }) => {
@@ -47,8 +46,6 @@ test('Get todos from wrong endpoint @tag("get")', async ({ api }) => {
 });
 
 test('Get specific todo by id @tag("get")', async ({ api }) => {
-    const UrlApi = 'https://apichallenges.eviltester.com';
-    console.log(`Прогресс тут: ${UrlApi}/gui/challenges/${api.token}`);
     const todoId = new TodoBuilder().withValidId().build();
     let response = await api.todos.getSpecificTodo(todoId);
     let data = await response.json();
@@ -68,22 +65,19 @@ test('Get nonexistent todo @tag("get")', async ({ api }) => {
 });
 
 test('Get filtered todo list @tag("get")', async ({ api }) => {
-    const UrlApi = 'https://apichallenges.eviltester.com';
-    console.log(`Прогресс тут: ${UrlApi}/gui/challenges/${api.token}`);
     const todo = new TodoBuilder().withTitle().withDoneStatus().build();
     await api.todos.createTodo(todo)
     let response = await api.todos.getFilteredTodo();
     let data = await response.json();
-    //console.log(data);
+    //console.log(data.todos[0].doneStatus);
 
 
     expect(response.status()).toBe(200);
     expect(data.todos.length).toBeGreaterThan(0);
+    expect(data.todos[0].doneStatus).toBe(true);
 });
 
 test('Send head request @tag("head")', async ({ api }) => {
-    const UrlApi = 'https://apichallenges.eviltester.com';
-    console.log(`Прогресс тут: ${UrlApi}/gui/challenges/${api.token}`);
     let response = await api.todos.head();
     //let data = await response.json();
     console.log(response);
@@ -93,11 +87,81 @@ test('Send head request @tag("head")', async ({ api }) => {
     //expect(data.todos.length).toBeGreaterThan(0);
 });
 
-test('Create a todo with invcalid doneStatus @tag("post")', async ({ api }) => {
+test('Create a todo with valid data @tag("post")', async ({ api }) => {
+    const todo = new TodoBuilder().withTitle().withDoneStatus().withDescription().build();
+    let response = await api.todos.createTodo(todo)
+    let data = await response.json();
+    console.log(data);
+
+
+    expect(response.status()).toBe(201);
+    expect(data.title).toEqual(todo.title);
+    expect(data.doneStatus).toEqual(todo.doneStatus);
+    expect(data.description).toEqual(todo.description);
+});
+
+test('Create a todo with invalid doneStatus @tag("post")', async ({ api }) => {
+    const todo = new TodoBuilder().withTitle().withInvalidDoneStatus().build();
+    let response = await api.todos.createTodo(todo)
+    //let data = await response.json();
+    //console.log(response);
+
+
+    expect(response.status()).toBe(400);
+    //expect(data.todos.length).toBeGreaterThan(0);
+});
+
+test('Create a todo with long title @tag("post")', async ({ api }) => {
+    const todo = new TodoBuilder().withLongTitle().withDoneStatus().withDescription().build();
+    let response = await api.todos.createTodo(todo)
+    //let data = await response.json();
+    //console.log(response);
+
+
+    expect(response.status()).toBe(400);
+    //expect(data.todos.length).toBeGreaterThan(0);
+});
+
+test('Create a todo with long description @tag("post")', async ({ api }) => {
+    const todo = new TodoBuilder().withTitle().withDoneStatus().withLongDescription().build();
+    let response = await api.todos.createTodo(todo)
+    //let data = await response.json();
+    //console.log(response);
+
+
+    expect(response.status()).toBe(400);
+    //expect(data.todos.length).toBeGreaterThan(0);
+});
+
+test('Create a todo with max description and title @tag("post")', async ({ api }) => {
+    const todo = new TodoBuilder().withMaxTitle().withDoneStatus().withMaxDescription().build();
+    let response = await api.todos.createTodo(todo)
+    let data = await response.json();
+    //console.log(todo.title);
+
+
+    expect(response.status()).toBe(201);
+    expect(data.title).toEqual(todo.title);
+    expect(data.doneStatus).toEqual(todo.doneStatus);
+    expect(data.description).toEqual(todo.description);
+});
+
+test('Create a todo with exceeding length @tag("post")', async ({ api }) => {
+    const todo = new TodoBuilder().withTitle().withDoneStatus().withExceedingLength().build();
+    let response = await api.todos.createTodo(todo)
+    //let data = await response.json();
+    //console.log(response);
+
+
+    expect(response.status()).toBe(413);
+    //expect(data.todos.length).toBeGreaterThan(0);
+});
+
+test('Create a todo with extra field @tag("post")', async ({ api }) => {
     const UrlApi = 'https://apichallenges.eviltester.com';
     console.log(`Прогресс тут: ${UrlApi}/gui/challenges/${api.token}`);
 
-    const todo = new TodoBuilder().withTitle().withInvalidDoneStatus().build();
+    const todo = new TodoBuilder().withTitle().withDoneStatus().withDescription().withExtraField().build();
     let response = await api.todos.createTodo(todo)
     //let data = await response.json();
     //console.log(response);

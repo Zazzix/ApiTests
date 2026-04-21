@@ -10,7 +10,15 @@ export class TodoBuilder {
         return this;
     }
     withTitle() {
-        this.title = faker.lorem.sentence(3);
+        this.title = faker.string.alpha({ length: { min: 1, max: 50 } });
+        return this;
+    }
+    withLongTitle() {
+        this.title = faker.string.alpha({ length: { min: 51, max: 200 } });
+        return this;
+    }
+    withMaxTitle() {
+        this.title = faker.string.alpha(50);
         return this;
     }
     withDoneStatus() {
@@ -22,7 +30,23 @@ export class TodoBuilder {
         return this;
     }
     withDescription() {
-        this.description = faker.lorem.sentence(5);
+        this.description = faker.string.alpha({ length: { min: 0, max: 200 } });
+        return this;
+    }
+    withLongDescription() {
+        this.description = faker.string.alpha({ length: { min: 201, max: 300 } });
+        return this;
+    }
+    withMaxDescription() {
+        this.description = faker.string.alpha(200);
+        return this;
+    }
+    withExceedingLength() {
+        this.description = faker.string.alpha(5001);
+        return this;
+    }
+    withExtraField() {
+        this.date = faker.date.anytime();
         return this;
     }
     build() {
