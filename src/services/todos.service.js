@@ -75,4 +75,17 @@ export class TodosService {
         );
         return response;
     }
+    async updateTodo(todoId, todo) {
+        const response = await this.request.post(`/todos/${todoId.id}`,
+            {
+                headers: {
+                    'X-CHALLENGER': this.token,
+                },
+                data: {
+                    'description': todo.description,
+                }
+            }
+        );
+        return response;
+    }
 }

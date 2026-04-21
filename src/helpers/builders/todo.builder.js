@@ -2,7 +2,7 @@ import { faker, Faker } from "@faker-js/faker";
 
 export class TodoBuilder {
     withValidId() {
-        this.id = faker.number.int({ max: 10 });
+        this.id = faker.number.int({ min: 1, max: 10 });
         return this;
     }
     withInvalidId() {

@@ -158,9 +158,6 @@ test('Create a todo with exceeding length @tag("post")', async ({ api }) => {
 });
 
 test('Create a todo with extra field @tag("post")', async ({ api }) => {
-    const UrlApi = 'https://apichallenges.eviltester.com';
-    console.log(`Прогресс тут: ${UrlApi}/gui/challenges/${api.token}`);
-
     const todo = new TodoBuilder().withTitle().withDoneStatus().withDescription().withExtraField().build();
     let response = await api.todos.createTodo(todo)
     //let data = await response.json();
@@ -171,10 +168,7 @@ test('Create a todo with extra field @tag("post")', async ({ api }) => {
     //expect(data.todos.length).toBeGreaterThan(0);
 });
 
-test.only('Pass the TodoID to create a todo @tag("put")', async ({ api }) => {
-    const UrlApi = 'https://apichallenges.eviltester.com';
-    console.log(`Прогресс тут: ${UrlApi}/gui/challenges/${api.token}`);
-
+test('Pass the TodoID to create a todo @tag("put")', async ({ api }) => {
     const todoId = new TodoBuilder().withInvalidId().build();
     const todo = new TodoBuilder().withTitle().withDoneStatus().withDescription().build();
     let response = await api.todos.createTodoWithId(todoId, todo)
@@ -184,4 +178,31 @@ test.only('Pass the TodoID to create a todo @tag("put")', async ({ api }) => {
 
     expect(response.status()).toBe(400);
     //expect(data.todos.length).toBeGreaterThan(0);
+});
+
+test('Update an exsiting Todo @tag("post")', async ({ api }) => {
+    const todoId = new TodoBuilder().withValidId().build();
+    const todo = new TodoBuilder().withTitle().withDoneStatus().withDescription().build();
+    let response = await api.todos.updateTodo(todoId, todo)
+    let data = await response.json();
+    console.log(data);
+
+
+    expect(response.status()).toBe(200);
+    expect(data.description).toEqual(todo.description);
+});
+
+test('Update a todo with nonexistent id @tag("post")', async ({ api }) => {
+    const UrlApi = 'https://apichallenges.eviltester.com';
+    console.log(`Прогресс тут: ${UrlApi}/gui/challenges/${api.token}`);
+
+    const todoId = new TodoBuilder().withInvalidId().build();
+    const todo = new TodoBuilder().withTitle().withDoneStatus().withDescription().build();
+    let response = await api.todos.updateTodo(todoId, todo)
+    //let data = await response.json();
+    //console.log(data);
+
+
+    expect(response.status()).toBe(404);
+    //expect(data.description).toEqual(todo.description);
 });
