@@ -170,3 +170,18 @@ test('Create a todo with extra field @tag("post")', async ({ api }) => {
     expect(response.status()).toBe(400);
     //expect(data.todos.length).toBeGreaterThan(0);
 });
+
+test.only('Pass the TodoID to create a todo @tag("put")', async ({ api }) => {
+    const UrlApi = 'https://apichallenges.eviltester.com';
+    console.log(`Прогресс тут: ${UrlApi}/gui/challenges/${api.token}`);
+
+    const todoId = new TodoBuilder().withInvalidId().build();
+    const todo = new TodoBuilder().withTitle().withDoneStatus().withDescription().build();
+    let response = await api.todos.createTodoWithId(todoId, todo)
+    //let data = await response.json();
+    //console.log(response);
+
+
+    expect(response.status()).toBe(400);
+    //expect(data.todos.length).toBeGreaterThan(0);
+});

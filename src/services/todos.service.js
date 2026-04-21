@@ -26,7 +26,6 @@ export class TodosService {
         return response
     }
     async getSpecificTodo(todoId) {
-        //const { id } = id
         const response = await this.request.get(`/todos/${todoId.id}`,
             {
                 headers: {
@@ -37,7 +36,6 @@ export class TodosService {
         return response;
     }
     async getFilteredTodo() {
-        //const { id } = id
 
         const response = await this.request.get('/todos?doneStatus=true',
             {
@@ -64,6 +62,17 @@ export class TodosService {
                 'X-CHALLENGER': this.token
             },
         });
+        return response;
+    }
+    async createTodoWithId(todoId, todo) {
+        const response = await this.request.put(`/todos/${todoId.id}`,
+            {
+                headers: {
+                    'X-CHALLENGER': this.token,
+                },
+                data: todo
+            }
+        );
         return response;
     }
 }
