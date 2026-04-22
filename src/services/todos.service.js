@@ -98,4 +98,17 @@ export class TodosService {
         );
         return response;
     }
+
+    async getJSONHeader(extraHeaders = {}) {
+        const response = await this.request.get('/todos',
+            {
+                headers: {
+                    'X-CHALLENGER': this.token,
+                    'Accept': 'application/json',
+                    ...extraHeaders
+                }
+            }
+        );
+        return response;
+    }
 }

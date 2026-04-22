@@ -259,19 +259,29 @@ test('Issue a PUT request to fail to update an existing todo @tag("put")', async
     expect(response.status()).toBe(400);
 });
 
-test.only('Issue a DELETE request to successfully delete a todo @tag("delete")', async ({ api }) => {
-    const UrlApi = 'https://apichallenges.eviltester.com';
-    console.log(`Прогресс тут: ${UrlApi}/gui/challenges/${api.token}`);
-
+test('Issue a DELETE request to successfully delete a todo @tag("delete")', async ({ api }) => {
     const todoId = new TodoBuilder().withValidId().build();
-    //const todo = new TodoBuilder().withInvalidId().withTitle().withDoneStatus().withDescription().build();
 
     let response = await api.todos.deleteTodo(todoId);
     let deletedTodo = await api.todos.getSpecificTodo(todoId)
-    //let data = await response.json();
-    //console.log(data);
-
 
     expect(response.status()).toBe(200);
     expect(deletedTodo.status()).toBe(404);
+});
+
+test('Issue a GET request to receive results in JSON format @tag("get")', async ({ api }) => {
+    let response = await api.todos.getJSONHeader();
+
+    expect(response.status()).toBe(200);
+    expect(response.headers()['content-type']).toBe('application/json');
+});
+
+test('Issue a GET request to receive results in XML format @tag("get")', async ({ api }) => {
+    const UrlApi = 'https://apichallenges.eviltester.com';
+    console.log(`Прогресс тут: ${UrlApi}/gui/challenges/${api.token}`);
+
+    let response = await api.todos.getJSONHeader({ 'Accept': 'application/xml' });
+
+    expect(response.status()).toBe(200);
+    expect(response.headers()['content-type']).toBe('application/xml');
 });
