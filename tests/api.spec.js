@@ -258,3 +258,20 @@ test('Issue a PUT request to fail to update an existing todo @tag("put")', async
 
     expect(response.status()).toBe(400);
 });
+
+test.only('Issue a DELETE request to successfully delete a todo @tag("delete")', async ({ api }) => {
+    const UrlApi = 'https://apichallenges.eviltester.com';
+    console.log(`Прогресс тут: ${UrlApi}/gui/challenges/${api.token}`);
+
+    const todoId = new TodoBuilder().withValidId().build();
+    //const todo = new TodoBuilder().withInvalidId().withTitle().withDoneStatus().withDescription().build();
+
+    let response = await api.todos.deleteTodo(todoId);
+    let deletedTodo = await api.todos.getSpecificTodo(todoId)
+    //let data = await response.json();
+    //console.log(data);
+
+
+    expect(response.status()).toBe(200);
+    expect(deletedTodo.status()).toBe(404);
+});

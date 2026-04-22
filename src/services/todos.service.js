@@ -88,4 +88,14 @@ export class TodosService {
         );
         return response;
     }
+    async deleteTodo(todoId) {
+        const response = await this.request.delete(`/todos/${todoId.id}`,
+            {
+                headers: {
+                    'X-CHALLENGER': this.token,
+                },
+            }
+        );
+        return response;
+    }
 }
