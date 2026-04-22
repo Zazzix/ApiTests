@@ -180,7 +180,7 @@ test('Pass the TodoID to create a todo @tag("put")', async ({ api }) => {
     //expect(data.todos.length).toBeGreaterThan(0);
 });
 
-test('Update an exsiting Todo @tag("post")', async ({ api }) => {
+test('Update an exsiting Todo using POST method @tag("post")', async ({ api }) => {
     const todoId = new TodoBuilder().withValidId().build();
     const todo = new TodoBuilder().withTitle().withDoneStatus().withDescription().build();
     let response = await api.todos.updateTodo(todoId, todo)
@@ -193,9 +193,6 @@ test('Update an exsiting Todo @tag("post")', async ({ api }) => {
 });
 
 test('Update a todo with nonexistent id @tag("post")', async ({ api }) => {
-    const UrlApi = 'https://apichallenges.eviltester.com';
-    console.log(`Прогресс тут: ${UrlApi}/gui/challenges/${api.token}`);
-
     const todoId = new TodoBuilder().withInvalidId().build();
     const todo = new TodoBuilder().withTitle().withDoneStatus().withDescription().build();
     let response = await api.todos.updateTodo(todoId, todo)
@@ -205,4 +202,59 @@ test('Update a todo with nonexistent id @tag("post")', async ({ api }) => {
 
     expect(response.status()).toBe(404);
     //expect(data.description).toEqual(todo.description);
+});
+
+test('Full update an exsiting Todo using PUT method @tag("put")', async ({ api }) => {
+    const todoId = new TodoBuilder().withValidId().build();
+    const todo = new TodoBuilder().withTitle().withDoneStatus().withDescription().build();
+
+    let response = await api.todos.createTodoWithId(todoId, todo)
+    let data = await response.json();
+    //console.log(data);
+
+
+    expect(response.status()).toBe(200);
+    expect(data.title).toEqual(todo.title);
+    expect(data.doneStatus).toEqual(todo.doneStatus);
+    expect(data.description).toEqual(todo.description);
+});
+
+test('Partial update an exsiting Todo using PUT method @tag("put")', async ({ api }) => {
+    const todoId = new TodoBuilder().withValidId().build();
+    const todo = new TodoBuilder().withTitle().build();
+
+    let response = await api.todos.createTodoWithId(todoId, todo)
+    let data = await response.json();
+    //console.log(data);
+
+
+    expect(response.status()).toBe(200);
+    expect(data.title).toEqual(todo.title);
+});
+
+test('Update an exsiting Todo without title using PUT method @tag("put")', async ({ api }) => {
+    const todoId = new TodoBuilder().withValidId().build();
+    const todo = new TodoBuilder().withDoneStatus().withDescription().build();
+
+    let response = await api.todos.createTodoWithId(todoId, todo)
+    let data = await response.json();
+    //console.log(data);
+
+
+    expect(response.status()).toBe(400);
+});
+
+test('Issue a PUT request to fail to update an existing todo @tag("put")', async ({ api }) => {
+    const UrlApi = 'https://apichallenges.eviltester.com';
+    console.log(`Прогресс тут: ${UrlApi}/gui/challenges/${api.token}`);
+
+    const todoId = new TodoBuilder().withValidId().build();
+    const todo = new TodoBuilder().withInvalidId().withTitle().withDoneStatus().withDescription().build();
+
+    let response = await api.todos.createTodoWithId(todoId, todo)
+    let data = await response.json();
+    //console.log(data);
+
+
+    expect(response.status()).toBe(400);
 });
