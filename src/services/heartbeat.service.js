@@ -17,4 +17,26 @@ export class HeartbeatService {
         );
         return response;
     }
+
+    async sendDeleteMethod() {
+        const response = await this.request.delete('/heartbeat',
+            {
+                headers: {
+                    'X-CHALLENGER': this.token,
+                }
+            }
+        );
+        return response;
+    }
+
+    async sendPatchMethod() {
+        const response = await this.request.patch('/heartbeat',
+            {
+                headers: {
+                    'X-CHALLENGER': this.token,
+                }
+            }
+        );
+        return response;
+    }
 }

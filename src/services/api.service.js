@@ -8,6 +8,5 @@ export class Api {
         this.challenges = new ChallengesService(request, this.token);
         this.todos = new TodosService(request, this.token);
         this.heartbeat = new HeartbeatService(request, this.token);
-        //this.challenges = new ChallengesService(request);
     }
 }

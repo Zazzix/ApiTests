@@ -14,8 +14,6 @@ export class ChallengesService {
                 }
             }
         );
-        //const r = await response.json();
-        //console.log(r);
         return response;
     }
 }
