@@ -1,7 +1,7 @@
 import { test } from '../src/helpers/fixtures/fixture';
 import { expect } from '@playwright/test';
-import { Api } from '../src/services/api.service';
-import { TodoBuilder } from '../src/helpers/builders/index';
+//import { Api } from '../src/services/api.service';
+import { TodoBuilder, HeartbeatBuilder } from '../src/helpers/builders/index';
 
 
 test('Create a new challenger session @tag("post")', async ({ api }) => {
@@ -284,4 +284,37 @@ test('Issue a GET request to receive results in XML format @tag("get")', async (
 
     expect(response.status()).toBe(200);
     expect(response.headers()['content-type']).toBe('application/xml');
+});
+
+test('Override a request with DELETE @tag("post")', async ({ api }) => {
+    const UrlApi = 'https://apichallenges.eviltester.com';
+    console.log(`Прогресс тут: ${UrlApi}/gui/challenges/${api.token}`);
+
+    const headers = new HeartbeatBuilder().deleteOverride().build();
+
+    let response = await api.heartbeat.methodOverride(headers);
+
+    expect(response.status()).toBe(405);
+});
+
+test('Override a request with PATCH @tag("post")', async ({ api }) => {
+    const UrlApi = 'https://apichallenges.eviltester.com';
+    console.log(`Прогресс тут: ${UrlApi}/gui/challenges/${api.token}`);
+
+    const headers = new HeartbeatBuilder().patchOverride().build();
+
+    let response = await api.heartbeat.methodOverride(headers);
+
+    expect(response.status()).toBe(500);
+});
+
+test.only('Override a request with TRACE @tag("post")', async ({ api }) => {
+    const UrlApi = 'https://apichallenges.eviltester.com';
+    console.log(`Прогресс тут: ${UrlApi}/gui/challenges/${api.token}`);
+
+    const headers = new HeartbeatBuilder().traceOverride().build();
+
+    let response = await api.heartbeat.methodOverride(headers);
+
+    expect(response.status()).toBe(501);
 });
