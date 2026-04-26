@@ -15,16 +15,7 @@ export class TodosService {
         );
         return response;
     }
-    async getInvalidTodo() {
-        const response = await this.request.get('/todo',
-            {
-                headers: {
-                    'X-CHALLENGER': this.token,
-                }
-            }
-        );
-        return response
-    }
+
     async getSpecificTodo(todoId) {
         const response = await this.request.get(`/todos/${todoId.id}`,
             {

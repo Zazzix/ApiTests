@@ -28,7 +28,7 @@ test('Get Todos list @tag("get")', async ({ api }) => {
 });
 
 test('Get todos from wrong endpoint @tag("get")', async ({ api }) => {
-    let response = await api.todos.getInvalidTodo();
+    let response = await api.todo.getInvalidTodo();
 
     expect(response.status()).toBe(404);
 });

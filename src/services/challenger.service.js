@@ -5,6 +5,6 @@ export class ChallengerService {
         this.request = request;
     }
     async post() {
-        return await this.request.post(`/challenger`);
+        return await this.request.post('/challenger');
     }
 }
