@@ -3,7 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "npx playwright test",
+    "test:get": "npx playwright test --grep @get",
+    "test:post": "npx playwright test --grep @post",
+    "test:put": "npx playwright test --grep @put",
+    "test:patch": "npx playwright test --grep @patch",
+    "test:delete": "npx playwright test --grep @delete"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Zazzix/ApiTests.git"
@@ -17,6 +24,7 @@
   },
   "homepage": "https://github.com/Zazzix/ApiTests#readme",
   "devDependencies": {
+    "@faker-js/faker": "^10.4.0",
     "@playwright/test": "^1.59.1",
     "@types/node": "^25.6.0"
   }
